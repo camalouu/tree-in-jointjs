@@ -46,57 +46,26 @@ const data = {
                 },
             ]
         },
-        {
-            id: 6333,
-            label: "3",
-            children: [
-                {
-                    id: 3333,
-                    label: "some label",
-                    children: []
-                },
-
-                {
-                    id: 33989,
-                    label: "yengi bola",
-                    children: [
-
-                        {
-                            id: 39030,
-                            label: "yengi bola 3",
-                            children: []
-                        },
-                    ]
-                },
-
-                {
-                    id: 33989,
-                    label: "yengi bola 2",
-                    children: [
-                        { id: 333111, label: "doddmd", children: [] }
-
-                    ]
-                }
-            ]
-        },
     ]
 }
 var graph = new joint.dia.Graph({}, { cellNamespace: joint.shapes });
 var paper = new joint.dia.Paper({
     el: $('#paper'),
-    width: $('body').width,
-    height: '100vh',
+    /*     width: $('body').width,
+        height: '100vh', */
+    width: screen.width,
+    height: screen.height,
     gridSize: 10,
     async: true,
     model: graph,
     cellViewNamespace: joint.shapes,
 });
 
-function addCellsRecursive(parentCell, data, depth = 0) {
+function addCellsRecursive(parentCell, data) {
     var cell = new joint.shapes.standard.Rectangle({
-        position: { x: 0, y: 0 }, // Position based on depth and x
+        position: { x: 0, y: 0 },
         size: { width: 100, height: 50 },
-        attrs: { rect: { fill: 'blue' }, text: { text: data.label, fill: 'white' } }
+        attrs: { rect: { fill: 'blue' }, text: { text: data.label, fill: 'white' } },
     });
     graph.addCell(cell);
     if (parentCell) {
@@ -108,12 +77,10 @@ function addCellsRecursive(parentCell, data, depth = 0) {
             attrs: { line: { stroke: 'black' } }
         });
         graph.addCell(link);
-        // link.toBack()
-
     }
     if (data.children && data.children.length > 0) {
         data.children.forEach(function (child) {
-            addCellsRecursive(cell, child, depth + 1);
+            addCellsRecursive(cell, child);
         });
     }
 }
@@ -144,11 +111,6 @@ graph.getLinks().forEach(function (link) {
     );
 });
 
-graph.on('change:position', function (cell) {
-    graph.getLinks().forEach(link => {
-        link.findView(paper).requestConnectionUpdate();
-    })
-})
 dagre.layout(layoutGraph);
 
 layoutGraph.nodes().forEach(function (nodeId) {
@@ -157,6 +119,11 @@ layoutGraph.nodes().forEach(function (nodeId) {
     cell.position(layoutNode.x, layoutNode.y);
 });
 
+graph.on('change:position', function (element, newPosition, opt) {
+    graph.getLinks().forEach(link => {
+        link.findView(paper).requestConnectionUpdate();
+    })
+})
 paper.on('link:mouseenter', function (linkView) {
     var tools = new joint.dia.ToolsView({
         tools: [new joint.linkTools.Vertices()]
