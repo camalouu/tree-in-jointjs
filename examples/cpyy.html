@@ -95,9 +95,90 @@
     <div id="paper-container"></div>
 
     <script>
+        const data = {
+            id: 6190,
+            label: "061945",
+            children: [
+                {
+                    id: 6198,
+                    label: "009024",
+                    children: [
+                        {
+                            id: 6204,
+                            label: "027874",
+                            children: [
+                                {
+                                    id: 33123,
+                                    lable: "grand grand grand kid",
+                                    children: []
+                                }
+                            ]
+                        },
+                        {
+                            id: 6203,
+                            label: "078404",
+                            children: []
+                        },
 
+                    ]
+                },
+                {
+                    id: 6233,
+                    label: "2",
+                    children: [
+                        {
+                            id: 620311,
+                            label: "grand kid 1",
+                            children: []
+                        },
+                        {
+                            id: 620311,
+                            label: "grand kid 2",
+                            children: []
+                        },
+                        {
+                            id: 620311,
+                            label: "grand kid 3",
+                            children: []
+                        },
+                    ]
+                },
+                {
+                    id: 6333,
+                    label: "3",
+                    children: [
+                        {
+                            id: 3333,
+                            label: "some label",
+                            children: []
+                        },
+
+                        {
+                            id: 33989,
+                            label: "yengi bola",
+                            children: [
+
+                                {
+                                    id: 39030,
+                                    label: "yengi bola 3",
+                                    children: []
+                                },
+                            ]
+                        },
+
+                        {
+                            id: 33989,
+                            label: "yengi bola 2",
+                            children: [
+                                { id: 333111, label: "doddmd", children: [] }
+
+                            ]
+                        }
+                    ]
+                },
+            ]
+        }
         var graph = new joint.dia.Graph({}, { cellNamespace: joint.shapes });
-
         var paper = new joint.dia.Paper({
             el: document.getElementById('paper'),
             width: 1000,
@@ -108,84 +189,40 @@
             cellViewNamespace: joint.shapes,
         });
 
-        var source = new joint.shapes.standard.Rectangle({
-            position: { x: 50, y: 50 },
-            size: { width: 140, height: 70 },
-            attrs: {
-                label: {
-                    text: 'Source',
-                    fill: '#000000',
-                    fontSize: 18,
-                    fontWeight: 'lighter',
-                    fontVariant: 'small-caps'
-                }
+        function addCellsRecursive(parentCell, data) {
+            var cell = new joint.shapes.standard.Rectangle({
+                position: { x: 0, y: 0 }, // Position based on depth and x
+                size: { width: 100, height: 50 },
+                attrs: { rect: { fill: 'blue' }, text: { text: data.label, fill: 'white' } }
+            });
+            graph.addCell(cell);
+            if (parentCell) {
+                var link = new joint.shapes.standard.Link({
+                    source: { id: parentCell.id },
+                    target: { id: cell.id },
+                    router: { name: 'orthogonal' },
+                    connector: { name: 'normal' },
+                    attrs: { line: { stroke: 'black' } }
+                });
+                graph.addCell(link);
             }
-        });
-        var source2 = new joint.shapes.standard.Rectangle({
-            position: { x: 150, y: 150 },
-            size: { width: 140, height: 70 },
-            attrs: {
-                label: {
-                    text: 'Source',
-                    fill: '#000000',
-                    fontSize: 18,
-                    fontWeight: 'lighter',
-                    fontVariant: 'small-caps'
-                }
+            if (data.children && data.children.length > 0) {
+                data.children.forEach(function (child) {
+                    addCellsRecursive(cell, child);
+                });
             }
-        });
+        }
+        addCellsRecursive(null, data);
 
-        var target = source.clone().translate(750, 400).attr('label/text', 'Target');
-        var target2 = source.clone().translate(750, 400).attr('label/text', 'Target 2');
-
-        var link = new joint.shapes.standard.Link({
-            source: { id: source.id },
-            target: { id: target.id },
-            router: { name: 'manhattan' },
-            connector: { name: 'normal' },
-            attrs: {
-                line: {
-                    stroke: '#000000',
-                    strokeWidth: 3
-                }
-            }
-        });
-
-        var obstacle = source.clone().translate(300, 100).attr({
-            label: {
-                text: 'Obstacle',
-                fill: '#000000'
-            }
-        });
-
-        var link2 = new joint.shapes.standard.Link({
-            source: { id: source.id },
-            target: { id: obstacle.id },
-            router: { name: 'manhattan' },
-            connector: { name: 'normal' },
-            attrs: {
-                line: {
-                    stroke: '#000000',
-                    strokeWidth: 3
-                }
-            }
-        });
-        var obstacles = [
-            obstacle,
-            obstacle.clone().translate(200, 100),
-            obstacle.clone().translate(-200, 150),
-            obstacle.clone().translate(400, 100),
-            obstacle.clone().translate(-100, 350),
-            obstacle.clone().translate(-300, 150)
-        ];
-
-        graph.addCells(obstacles).addCells([source, target, link, source2, target2, link2]);
         graph.on('change:position', function (cell) {
             graph.getLinks().forEach(link => {
                 link.findView(paper).requestConnectionUpdate();
             })
-        });
+        })
     </script>
+
+
+
 </body>
 
 </html>
