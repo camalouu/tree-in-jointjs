@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.4.1/backbone-min.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.7/joint.min.js" integrity="sha512-0kHmK8RUwEQNkd8fI7LyJP/8ZkHr1s9R/Xh2GC4fTluS7NpGuu5ed/jYvkkKzGyjVleZwKI35YvSoQL+wZ2v4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.7/joint.core.min.js" integrity="sha512-zCg4YtkvJ44FAVrP1M2BLN/uT7XdhdnJ+cpCmuu6RbPyCiBuLkbLkqnPcKHRsoRdCwmoP2bSm9RF2jLcke/0ZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.7/geometry.min.js" integrity="sha512-rZ0lnakbkL/Zk0E23SDfdtQsIaG+Sma+26u0/dBp6/F2ILJ0Yzgzw924YHycyusfkZHCqDC9jXPA8eNlgk+CaA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.7/joint.layout.DirectedGraph.min.js" integrity="sha512-qkMiS5zUMC36MY8m/JpZAXL8z6NytZ/pdazGYd1z68wnxe7temEMKPYj8/8v9xoijCDgNFXUduICmBa+Eky/Pg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.7/joint.nowrap.min.js" integrity="sha512-VgqhEum2+MFJj/KnSOo948fGVCP+lorlZjxyYVe678dNEWmmApK3nb3k6BY5ZHmAH9v3MeO+K+ZpQBWiDtIAJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.7/joint.shapes.chess.min.js" integrity="sha512-ewobB6WQJVqr/+EQ4FHj9SE/CK843szKXt9i+lNT3P7Qa3A5mTBrL5qvnRvvBXLBZdLjJV0ik2jJzTqY+axgZg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.7/joint.shapes.devs.min.js" integrity="sha512-giKIqDZv8Vsqvy/TVavPN0h0GSH+a6ahYdD1rn179qkg/AgYUiRX8vXkXBqYa21GoU1PSqdB4n/1fLQ6eMJx3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.7/joint.shapes.erd.min.js" integrity="sha512-yak6W7TAiBcYt+C/OYaPMdzTXR0uYbDz3d3SLWi4Abe0oeoipTEjXkJah1Uobfz3V/4zddA64PK5JojXhI5Y0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.7/joint.shapes.fsa.min.js" integrity="sha512-mO6I8Cv+xlOGx/P6WtGxBDJ3MNoouj3xqt1ihzdxJ+PT97BCBmlDSReLqP6W6qjn4/qnri8+3/MY74zz/uKbKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.7/joint.shapes.logic.min.js" integrity="sha512-7F3A8aS/aoQB4Rk7REwnbjIvvPiF/hDEPvghn3ZyoeB+ReiUoa0GsCvL+CuPPCxnaUR4Hhkvw4KPq8EbxuBJQg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.7/joint.shapes.org.min.js" integrity="sha512-wpdYg3H16G5WCyy37eks0uMFqolvy12KmFQrgzhrFIMB1bBu94CdsG2RgfPxECXEHbqcvpUG+IacHSbNVoQyHA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.7/joint.shapes.pn.min.js" integrity="sha512-SFeVHsrExkAbT9PCIJTLTuBCslMHjnq5zb0VHJY0XfqB0obO6YJDH3fTfmQhNPLNUa/rKooc9hbjjDwBOAHWbA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.7/joint.shapes.uml.min.js" integrity="sha512-+lwfVlGOr0kNZsZP1PwbkeHDVM5EAfcRKDwYRrCOJI98o2M2GOO7P9QXjz2Tgcqp+RVPUAKda4F8NWXCDV6pJQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.7/vectorizer.min.js" integrity="sha512-TuNOXCEJPSS98uM22hO1eVU4yF88XrXB5k2LaLrjyNWVHY//LB/Mflx45fsBQPYwzySkGXOQlLMaAsYc6ht5YQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.7/joint.min.css" integrity="sha512-9dgxZMRR9uQaT8xD2wWlGPJz0PEmWuSXlHEkTLl2rQD14DPlJ2khE7vL+5fOnwWcF5y24WrGLRfFiQ0dnvEBpA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.7/joint.core.min.css" integrity="sha512-9dgxZMRR9uQaT8xD2wWlGPJz0PEmWuSXlHEkTLl2rQD14DPlJ2khE7vL+5fOnwWcF5y24WrGLRfFiQ0dnvEBpA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+<style>
+    #paper-container {
+        position: absolute;
+        right: 0;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        overflow: scroll;
+    }
+</style>
+
+<div id="paper-container"></div>
+
+<script>
+    const { dia, shapes, highlighters } = joint;
+
+    const paperContainer = document.getElementById("paper-container");
+
+    const graph = new dia.Graph({}, { cellNamespace: shapes });
+    const paper = new dia.Paper({
+        model: graph,
+        cellViewNamespace: shapes,
+        width: "100%",
+        height: "100%",
+        gridSize: 10,
+        async: true,
+        frozen: true,
+        sorting: dia.Paper.sorting.APPROX,
+        background: { color: "#F3F7F6" },
+        clickThreshold: 10,
+        defaultConnector: {
+            name: "normal"
+        },
+        defaultRouter: {
+            name: "manhattan",
+            args: {
+                step: 10,
+                padding: { bottom: 20 }
+            }
+        }
+    });
+
+    paperContainer.appendChild(paper.el);
+
+    const color = "#ff4468";
+
+    function element(x, y) {
+        const el = new shapes.standard.Rectangle({
+            position: { x, y },
+            size: { width: 100, height: 60 },
+            attrs: {
+                label: {
+                    text: `Node ${graph.getElements().length + 1}`,
+                    fontFamily: "sans-serif"
+                }
+            },
+            z: 2
+        });
+        graph.addCell(el);
+        return el;
+    }
+
+    function link(target, source) {
+        const l = new shapes.standard.Link({
+            source: { id: source.id },
+            target: { id: target.id },
+            z: 1,
+            attrs: {
+                line: {
+                    targetMarker: null, // Set to null or an empty string to remove the arrow
+                },
+            },
+        });
+        graph.addCell(l);
+        return l;
+    }
+
+    const el1 = element(300, 50);
+    const el2 = element(100, 200);
+    const el3 = element(300, 200);
+    const el4 = element(500, 200);
+    const el5 = element(300, 350);
+    const el6 = element(40, 350);
+    const el7 = element(160, 350);
+    const el8 = element(160, 500);
+
+    link(el1, el3);
+    link(el1, el2);
+    link(el1, el4);
+    link(el2, el6);
+    link(el2, el7);
+    link(el3, el5);
+    link(el7, el8);
+
+    paper.unfreeze();
+
+    function getElementPredecessorLinks(el) {
+        return graph
+            .getSubgraph([el, ...graph.getPredecessors(el)])
+            .filter((cell) => cell.isLink());
+    }
+
+    function highlightCell(cell) {
+        highlighters.addClass.add(
+            cell.findView(paper),
+            cell.isElement() ? "body" : "line",
+            "selection",
+            { className: "selection" }
+        );
+    }
+
+    function unhighlightCell(cell) {
+        highlighters.addClass.remove(cell.findView(paper), "selection");
+    }
+
+    let selection = null;
+
+    function selectElement(el) {
+        if (selection === el) return;
+        if (selection) {
+            unhighlightCell(selection);
+            graph.getLinks().forEach((link) => unhighlightCell(link));
+        }
+        if (el) {
+            highlightCell(el);
+            getElementPredecessorLinks(el).forEach((link) => highlightCell(link));
+            selection = el;
+        } else {
+            selection = null;
+        }
+    }
+
+    paper.on("element:pointerclick", (elementView) =>
+        selectElement(elementView.model)
+    );
+    paper.on("blank:pointerclick", (elementView) => selectElement(null));
+
+    selectElement(el2);
+
+</script>
+
+
+
+</body>
+</html>

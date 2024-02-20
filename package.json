@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@dagrejs/dagre": "^1.0.4",
+    "jointjs": "^3.7.7"
+  }
+}
