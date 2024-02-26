@@ -59,6 +59,7 @@ var paper = new joint.dia.Paper({
     async: true,
     model: graph,
     cellViewNamespace: joint.shapes,
+    restrictTranslate: true
 });
 
 function addCellsRecursive(parentCell, data) {
@@ -77,6 +78,7 @@ function addCellsRecursive(parentCell, data) {
             attrs: { line: { stroke: 'black' } }
         });
         graph.addCell(link);
+        parentCell.embed(cell);
     }
     if (data.children && data.children.length > 0) {
         data.children.forEach(function (child) {
@@ -90,10 +92,10 @@ var layoutGraph = new dagre.graphlib.Graph();
 layoutGraph.setGraph({
     rankdir: 'TB',
     align: 'DR',
-    ranksep: 0,
+    ranksep: 100,
     ranker: "longest-path",
-    nodesep: 10,
-    edgesep: 0,
+    nodesep: 110,
+    edgesep: 10,
     marginy: 50,
 });
 layoutGraph.setDefaultEdgeLabel(function () { return {}; });
@@ -120,6 +122,7 @@ layoutGraph.nodes().forEach(function (nodeId) {
 });
 
 graph.on('change:position', function (element, newPosition, opt) {
+    console.log(element)
     graph.getLinks().forEach(link => {
         link.findView(paper).requestConnectionUpdate();
     })
